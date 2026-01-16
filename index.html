@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, user-scalable=no">
+    <title>Catálogo de Plantas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Datos de plantas
+        const plantsData = [
+            {
+                id: 1,
+                name: "Monstera Deliciosa",
+                type: "interior",
+                image: "🌿",
+                description: "Planta tropical de hojas grandes y perforadas. Perfecta para interiores luminosos.",
+                care: "Riego moderado, luz indirecta, temperatura cálida",
+                difficulty: "Fácil"
+            },
+            {
+                id: 2,
+                name: "Lavanda",
+                type: "exterior",
+                image: "🪻",
+                description: "Planta aromática con flores violetas. Ideal para jardines y balcones soleados.",
+                care: "Pleno sol, riego escaso, suelo bien drenado",
+                difficulty: "Fácil"
+            },
+            {
+                id: 3,
+                name: "Pothos",
+                type: "interior",
+                image: "🌱",
+                description: "Planta colgante de fácil cuidado. Perfecta para principiantes.",
+                care: "Luz baja a media, riego cuando el suelo esté seco",
+                difficulty: "Muy fácil"
+            },
+            {
+                id: 4,
+                name: "Rosal",
+                type: "exterior",
+                image: "🌹",
+                description: "Arbusto con flores coloridas y fragantes. Clásico de los jardines.",
+                care: "Pleno sol, riego regular, poda estacional",
+                difficulty: "Media"
+            },
+            {
+                id: 5,
+                name: "Sansevieria",
+                type: "interior",
+                image: "🪴",
+                description: "También conocida como lengua de suegra. Muy resistente y purificadora.",
+                care: "Luz baja a alta, riego muy escaso",
+                difficulty: "Muy fácil"
+            },
+            {
+                id: 6,
+                name: "Geranio",
+                type: "exterior",
+                image: "🌺",
+                description: "Planta con flores abundantes en diversos colores. Ideal para balcones.",
+                care: "Sol directo, riego moderado, fertilizante regular",
+                difficulty: "Fácil"
+            },
+            {
+                id: 7,
+                name: "Helecho",
+                type: "interior",
+                image: "🌿",
+                description: "Planta de follaje delicado que aporta frescura al hogar.",
+                care: "Luz indirecta, humedad alta, riego frecuente",
+                difficulty: "Media"
+            },
+            {
+                id: 8,
+                name: "Cactus",
+                type: "exterior",
+                image: "🌵",
+                description: "Planta suculenta resistente a la sequía. Perfecta para climas secos.",
+                care: "Pleno sol, riego muy escaso, suelo arenoso",
+                difficulty: "Muy fácil"
+            }
+        ];
+
+        // Componente Card de Planta
+        function PlantCard({ plant, onClick }) {
+            return (
+                <div className="plant-card" onClick={() => onClick(plant)}>
+                    <div className="plant-icon">{plant.image}</div>
+                    <h1>{plant.name}</h1>
+                    <span className={`plant-type ${plant.type}`}>
+                        {plant.type === 'interior' ? '🏠 Interior' : '🌞 Exterior'}
+                    </span>
+                    <p className="plant-preview">{plant.description}</p>
+                    <button className="details-btn">Ver más</button>
+                </div>
+            );
+        }
+
+        // Componente Modal de Detalles
+        function PlantModal({ plant, onClose }) {
+            if (!plant) return null;
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-btn" onClick={onClose} aria-labell="Cerrar diálogo">✕</button>
+                        <div className="modal-icon" role="img" aria-label={`Icono de ${plant.name}`}>{plant.image}</div>
+                        <h2 id="modal-title">{plant.name}</h2>
+                        <span className={`plant-type ${plant.type}`}>
+                            {plant.type === 'interior' ? '🏠 Interior' : '🌞 Exterior'}
+                        </span>
+                        <div className="modal-details">
+                            <p className="description">{plant.description}</p>
+                            <div className="info-section">
+                                <h4>💧 Cuidados:</h4>
+                                <p>{plant.care}</p>
+                            </div>
+                            <div className="info-section">
+                                <h4>📊 Dificultad:</h4>
+                                <span className={`difficulty ${plant.difficulty.toLowerCase().replace(' ', '-')}`}>
+                                    {plant.difficulty}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Componente Principal
+        function App() {
+            const [filter, setFilter] = useState('all');
+            const [selectedPlant, setSelectedPlant] = useState(null);
+
+            const filteredPlants = filter === 'all' 
+                ? plantsData 
+                : plantsData.filter(plant => plant.type === filter);
+
+            return (
+                <div className="app">
+                    <div className="header">
+                        <h1>🌿 Catálogo de Plantas</h1>
+                        <p>Descubre las mejores plantas para tu hogar y jardín</p>
+                    </div>
+
+                    <div className="filters">
+                        <div 
+                            className={filter === 'all' ? 'active' : ''} 
+                            onClick={() => setFilter('all')}
+                        >
+                            Todas ({plantsData.length})
+                        </div>
+                        <div 
+                            className={filter === 'interior' ? 'active' : ''} 
+                            onClick={() => setFilter('interior')}
+                        >
+                            🏠 Interior ({plantsData.filter(p => p.type === 'interior').length})
+                        </div>
+                        <div 
+                            className={filter === 'exterior' ? 'active' : ''} 
+                            onClick={() => setFilter('exterior')}
+                        >
+                            🌞 Exterior ({plantsData.filter(p => p.type === 'exterior').length})
+                        </div>
+                    </div>
+
+                    <div className="plants-grid">
+                        {filteredPlants.map(plant => (
+                            <PlantCard 
+                                key={plant.id} 
+                                plant={plant} 
+                                onClick={setSelectedPlant}
+                            />
+                        ))}
+                    </div>
+
+                    {filteredPlants.length === 0 && (
+                        <p className="no-results">No se encontraron plantas</p>
+                    )}
+
+                    <PlantModal 
+                        plant={selectedPlant} 
+                        onClose={() => setSelectedPlant(null)} 
+                    />
+                </div>
+            );
+        }
+
+        // Renderizar la aplicación
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
