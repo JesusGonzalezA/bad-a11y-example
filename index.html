@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content= "width=device-width, user-scalable=no">
@@ -153,21 +153,25 @@
                         <p>Descubre las mejores plantas para tu hogar y jardín</p>
                     </div>
 
+                    <div className="more">
+                        <a href="example.com">Ver más</a>
+                    </div>
+
                     <div className="filters">
                         <div 
-                            className={filter === 'all' ? 'active' : ''} 
+                            className={filter === 'all' ? 'active button' : 'button'} 
                             onClick={() => setFilter('all')}
                         >
                             Todas ({plantsData.length})
                         </div>
-                        <div 
-                            className={filter === 'interior' ? 'active' : ''} 
+                        <button 
+                            className={filter === 'interior' ? 'active button' : 'button'} 
                             onClick={() => setFilter('interior')}
                         >
                             🏠 Interior ({plantsData.filter(p => p.type === 'interior').length})
-                        </div>
+                        </button>
                         <div 
-                            className={filter === 'exterior' ? 'active' : ''} 
+                            className={filter === 'exterior' ? 'active button' : 'button'} 
                             onClick={() => setFilter('exterior')}
                         >
                             🌞 Exterior ({plantsData.filter(p => p.type === 'exterior').length})

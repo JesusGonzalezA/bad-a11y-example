@@ -44,7 +44,21 @@ body {
     flex-wrap: wrap;
 }
 
-.filters div {
+.more {
+    position: relative;
+    height: 30px;
+
+    a {
+        color: white;
+        font-family: inherit;
+        height: 120px;
+        position: absolute;
+        top: 0;
+        left: 46%;
+    }
+}
+
+.filters .button {
     background: white;
     border: none;
     padding: 12px 24px;
@@ -56,12 +70,12 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.filters div:hover {
+.filters .button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.filters div.active {
+.filters .button.active {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 }
@@ -328,7 +342,7 @@ body {
         align-items: stretch;
     }
 
-    .filters button {
+    .filters .button {
         width: 100%;
     }
 }
